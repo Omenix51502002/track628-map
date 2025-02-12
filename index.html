@@ -4,16 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Suivi GPS</title>
-    <link rel="stylesheet" href="style.css">
+    
+    <!-- Importation de Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        #map {
+            height: 100vh; /* Plein écran */
+            width: 100%;
+        }
+        #speedDisplay {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 18px;
+        }
+    </style>
 </head>
 <body>
-    <div id="map"></div>
-    <div id="speed-display">Vitesse : 0 km/h</div>
 
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js"></script>
+    <!-- Zone où la carte s'affiche -->
+    <div id="map"></div>
+    
+    <!-- Affichage de la vitesse -->
+    <div id="speedDisplay">Vitesse : 0 km/h</div>
+
+    <!-- Importation de Leaflet JS -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="script.js"></script>
+
 </body>
 </html>
