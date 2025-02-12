@@ -40,7 +40,61 @@
 
     <!-- Importation de Leaflet JS -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="script.js"></script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+
+    <script>
+        // Configuration Firebase (remplace avec tes propres valeurs)
+        const firebaseConfig = {
+            apiKey: "AIzaSyBDUPDtrF4IsEXdeorjEfR1R8Yi2-RJd7k",
+            authDomain: "track628.firebaseapp.com",
+            databaseURL: "https://track628-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "track628",
+            storageBucket: "track628.firebasestorage.app",
+            messagingSenderId: "115249938197",
+            appId: "1:115249938197:web:35da7854d46d52b2bd731c",
+            measurementId: "G-Q7P5GTP9JT"
+        };
+
+        // Initialisation Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Initialisation de la carte Leaflet
+        var map = L.map('map').setView([48.8566, 2.3522], 13); // Coordonnées par défaut (Paris)
+
+        // Ajouter une couche OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Ajouter un marqueur pour la position
+        var marker = L.marker([48.8566, 2.3522]).addTo(map);
+
+        // Référence Firebase
+        var database = firebase.database().ref("locationData");
+
+        // Fonction pour mettre à jour la position et la vitesse
+        function updatePosition(snapshot) {
+            var data = snapshot.val();
+            if (data) {
+                var lat = data.latitude;
+                var lng = data.longitude;
+                var speed = data.speed * 3.6; // Convertir m/s en km/h
+
+                // Mise à jour du marqueur et recentrage sur la position
+                marker.setLatLng([lat, lng]);
+                map.setView([lat, lng]);
+
+                // Mise à jour de l'affichage de la vitesse
+                document.getElementById('speedDisplay').innerText = `Vitesse : ${speed.toFixed(1)} km/h`;
+            }
+        }
+
+        // Écoute les mises à jour en temps réel
+        database.on("value", updatePosition);
+    </script>
 
 </body>
 </html>
