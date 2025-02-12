@@ -1,100 +1,27 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suivi GPS</title>
-    
-    <!-- Importation de Leaflet CSS -->
+    <title>Suivi GPS avec Firebase</title>
+     <!-- Ajouter le lien vers la feuille de style de Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
-        #map {
-            height: 100vh; /* Plein écran */
-            width: 100%;
-        }
-        #speedDisplay {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 18px;
-        }
-    </style>
+    
+    <!-- Ajouter le lien vers le script JS de Leaflet -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="static/style.css"> <!-- Changer le lien pour charger le CSS à partir de "static" -->
 </head>
 <body>
+    <h1>Suivi GPS en temps réel</h1>
+    <p>Vitesse: <span id="speed">0 km/h</span></p>
+    <div id="map" style="height: 400px; width: 100%;"></div>
+    <div>
+        <p>Latitude: <span id="latitude">0</span></p>
+        <p>Longitude: <span id="longitude">0</span></p>
+        
+    </div>
 
-    <!-- Zone où la carte s'affiche -->
-    <div id="map"></div>
-    
-    <!-- Affichage de la vitesse -->
-    <div id="speedDisplay">Vitesse : 0 km/h</div>
-
-    <!-- Importation de Leaflet JS -->
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
-
-    <script>
-        // Configuration Firebase (remplace avec tes propres valeurs)
-        const firebaseConfig = {
-            apiKey: "AIzaSyBDUPDtrF4IsEXdeorjEfR1R8Yi2-RJd7k",
-            authDomain: "track628.firebaseapp.com",
-            databaseURL: "https://track628-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "track628",
-            storageBucket: "track628.firebasestorage.app",
-            messagingSenderId: "115249938197",
-            appId: "1:115249938197:web:35da7854d46d52b2bd731c",
-            measurementId: "G-Q7P5GTP9JT"
-        };
-
-        // Initialisation Firebase
-        firebase.initializeApp(firebaseConfig);
-
-        // Initialisation de la carte Leaflet
-        var map = L.map('map').setView([48.8566, 2.3522], 13); // Coordonnées par défaut (Paris)
-
-        // Ajouter une couche OpenStreetMap
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap contributors'
-        }).addTo(map);
-
-        // Ajouter un marqueur pour la position
-        var marker = L.marker([48.8566, 2.3522]).addTo(map);
-
-        // Référence Firebase
-        var database = firebase.database().ref("locationData");
-
-        // Fonction pour mettre à jour la position et la vitesse
-        function updatePosition(snapshot) {
-            var data = snapshot.val();
-            if (data) {
-                var lat = data.latitude;
-                var lng = data.longitude;
-                var speed = data.speed * 3.6; // Convertir m/s en km/h
-
-                // Mise à jour du marqueur et recentrage sur la position
-                marker.setLatLng([lat, lng]);
-                map.setView([lat, lng]);
-
-                // Mise à jour de l'affichage de la vitesse
-                document.getElementById('speedDisplay').innerText = `Vitesse : ${speed.toFixed(1)} km/h`;
-            }
-        }
-
-        // Écoute les mises à jour en temps réel
-        database.on("value", updatePosition);
-    </script>
-
+    <!-- Charger le script JS à partir de "static" -->
+    <script type="module" src="static/script.js"></script> 
 </body>
 </html>
